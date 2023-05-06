@@ -13,7 +13,8 @@ export function createViteProxy(isOpenProxy: boolean, envConfig: ServiceEnvConfi
       target: envConfig.url,
       changeOrigin: true,
       rewrite: path => path.replace(new RegExp(`^${envConfig.proxyPattern}`), '')
-    }
+    },
+    '^/mock': ''
   };
 
   return proxy;
