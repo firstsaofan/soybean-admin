@@ -44,7 +44,7 @@
     "build:vercel": "cross-env VITE_HASH_ROUTE=Y VITE_VERCEL=Y vite build",
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
-    "lint": "eslint . --fix --ext .js,.jsx,.mjs,.json,.ts,.tsx,.vue",
+    "lint": "eslint . --max-warnings=0 --fix --ext .js,.jsx,.mjs,.json,.ts,.tsx,.vue",
     "format": "soy prettier-format",
     "commit": "soy git-commit",
     "cleanup": "soy cleanup",

@@ -1,4 +1,4 @@
-import { mockRequest } from '../request';
+import { mockRequest,request } from '../request';
 
 /**
  * 获取验证码
@@ -7,20 +7,31 @@ import { mockRequest } from '../request';
  */
 export function fetchSmsCode(phone: string) {
   return mockRequest.post<boolean>('/getSmsCode', { phone });
+  // return mockRequest.post<boolean>('/getSmsCode', { phone });
 }
 
 /**
- * 登录
- * @param userName - 用户名
- * @param password - 密码
+ * 获取邮箱验证码
+ * @param userEmail - 邮箱
+ * @returns - 返回boolean值表示是否发送成功
  */
-export function fetchLogin(userName: string, password: string) {
-  return mockRequest.post<ApiAuth.Token>('/login', { userName, password });
+export function fetchEmailCode(userEmail: string) {
+  return request.post<boolean>('/api/v1/Email/CreateCheckCode', { userEmail });
+}
+
+/**
+ * 登录(登录接口)
+ * @param UserAccount - 用户名
+ * @param UserPassword - 密码
+ */
+export function fetchLogin(UserAccount: string, UserPassword: string) {
+  return request.post<ApiAuth.Token>('/api/v1/Login/Login', { UserAccount, UserPassword });
+  // return mockRequest.post<ApiAuth.Token>('/login', { userName, password });
 }
 
 /** 获取用户信息 */
 export function fetchUserInfo() {
-  return mockRequest.get<ApiAuth.UserInfo>('/getUserInfo');
+  return request.get<ApiAuth.UserInfo>('/api/v1/Login/GetUserInfo');
 }
 
 /**
@@ -28,7 +39,7 @@ export function fetchUserInfo() {
  * @param userId - 用户id
  * @description 后端根据用户id查询到对应的角色类型，并将路由筛选出对应角色的路由数据返回前端
  */
-export function fetchUserRoutes(userId: string) {
+export function fetchUserRoutes(userId: number) {
   return mockRequest.post<ApiRoute.Route>('/getUserRoutes', { userId });
 }
 
@@ -38,4 +49,16 @@ export function fetchUserRoutes(userId: string) {
  */
 export function fetchUpdateToken(refreshToken: string) {
   return mockRequest.post<ApiAuth.Token>('/updateToken', { refreshToken });
+}
+
+/**
+ * 注册接口
+ * @param userAccount - 登录账号
+ * @param userPassword - 密码
+ * @param repeatPassword - 密码确认
+ * @param checkCode - 校验码
+ * @returns 
+ */
+export function fetchRegister(userAccount: string,userPassword: string,repeatPassword: string,checkCode: string) {
+  return request.post<string>('/api/v1/Login/Register', { userAccount, userPassword,repeatPassword,checkCode});
 }

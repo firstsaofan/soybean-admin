@@ -25,7 +25,7 @@ declare namespace ApiRoute {
 declare namespace ApiUserManagement {
   interface User {
     /** 用户id */
-    id: string;
+    userId: number;
     /** 用户名 */
     userName: string | null;
     /** 用户年龄 */
@@ -37,9 +37,9 @@ declare namespace ApiUserManagement {
      */
     gender: '0' | '1' | null;
     /** 用户手机号码 */
-    phone: string;
+    userPhoneNum: string;
     /** 用户邮箱 */
-    email: string | null;
+    userEmail: string | null;
     /**
      * 用户状态
      * - 1: 启用
@@ -48,5 +48,11 @@ declare namespace ApiUserManagement {
      * - 4: 软删除
      */
     userStatus: '1' | '2' | '3' | '4' | null;
+    /**
+     * 是否能登陆
+     * - true: 启用
+     * - false: 禁用
+     */
+    enableLogin: true | false | null;
   }
 }

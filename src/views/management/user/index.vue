@@ -35,7 +35,7 @@ import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
 import { NButton, NPopconfirm, NSpace, NTag } from 'naive-ui';
 import type { DataTableColumns, PaginationProps } from 'naive-ui';
-import { genderLabels, userStatusLabels } from '@/constants';
+import { genderLabels } from '@/constants';
 import { fetchUserList } from '@/service';
 import { useBoolean, useLoading } from '@/hooks';
 import TableActionModal from './components/table-action-modal.vue';
@@ -77,11 +77,6 @@ const columns: Ref<DataTableColumns<UserManagement.User>> = ref([
     align: 'center'
   },
   {
-    key: 'age',
-    title: '用户年龄',
-    align: 'center'
-  },
-  {
     key: 'gender',
     title: '性别',
     align: 'center',
@@ -99,29 +94,22 @@ const columns: Ref<DataTableColumns<UserManagement.User>> = ref([
     }
   },
   {
-    key: 'phone',
+    key: 'userPhoneNum',
     title: '手机号码',
     align: 'center'
   },
   {
-    key: 'email',
+    key: 'userEmail',
     title: '邮箱',
     align: 'center'
   },
   {
-    key: 'userStatus',
+    key: 'enableLogin',
     title: '状态',
     align: 'center',
     render: row => {
-      if (row.userStatus) {
-        const tagTypes: Record<UserManagement.UserStatusKey, NaiveUI.ThemeColor> = {
-          '1': 'success',
-          '2': 'error',
-          '3': 'warning',
-          '4': 'default'
-        };
-
-        return <NTag type={tagTypes[row.userStatus]}>{userStatusLabels[row.userStatus]}</NTag>;
+      if (row.enableLogin) {
+        return <NTag type="success">正常</NTag>;
       }
       return <span></span>;
     }
@@ -133,10 +121,10 @@ const columns: Ref<DataTableColumns<UserManagement.User>> = ref([
     render: row => {
       return (
         <NSpace justify={'center'}>
-          <NButton size={'small'} onClick={() => handleEditTable(row.id)}>
+          <NButton size={'small'} onClick={() => handleEditTable(row.userId)}>
             编辑
           </NButton>
-          <NPopconfirm onPositiveClick={() => handleDeleteTable(row.id)}>
+          <NPopconfirm onPositiveClick={() => handleDeleteTable(row.userId)}>
             {{
               default: () => '确认删除',
               trigger: () => <NButton size={'small'}>删除</NButton>
@@ -165,8 +153,8 @@ function handleAddTable() {
   setModalType('add');
 }
 
-function handleEditTable(rowId: string) {
-  const findItem = tableData.value.find(item => item.id === rowId);
+function handleEditTable(rowId: number) {
+  const findItem = tableData.value.find(item => item.userId === rowId);
   if (findItem) {
     setEditData(findItem);
   }
@@ -174,7 +162,7 @@ function handleEditTable(rowId: string) {
   openModal();
 }
 
-function handleDeleteTable(rowId: string) {
+function handleDeleteTable(rowId: number) {
   window.$message?.info(`点击了删除，rowId为${rowId}`);
 }
 

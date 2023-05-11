@@ -1,7 +1,7 @@
 <template>
   <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false">
-    <n-form-item path="phone">
-      <n-input v-model:value="model.phone" placeholder="手机号码" />
+    <n-form-item path="email">
+      <n-input v-model:value="model.email" placeholder="电子邮箱" />
     </n-form-item>
     <n-form-item path="code">
       <div class="flex-y-center w-full">
@@ -29,38 +29,45 @@
 <script lang="ts" setup>
 import { reactive, ref, toRefs } from 'vue';
 import type { FormInst, FormRules } from 'naive-ui';
+import { fetchRegister } from '@/service';
 import { useRouterPush } from '@/composables';
 import { useSmsCode } from '@/hooks';
 import { formRules, getConfirmPwdRule } from '@/utils';
 
 const { toLoginModule } = useRouterPush();
-const { label, isCounting, loading: smsLoading, start } = useSmsCode();
+const { label, isCounting, loading: smsLoading, getEmailCode } = useSmsCode();
 
 const formRef = ref<HTMLElement & FormInst>();
 
 const model = reactive({
-  phone: '',
+  email: '',
   code: '',
   pwd: '',
   confirmPwd: ''
 });
 
 const rules: FormRules = {
-  phone: formRules.phone,
+  email: formRules.email,
   code: formRules.code,
   pwd: formRules.pwd,
   confirmPwd: getConfirmPwdRule(toRefs(model).pwd)
 };
 
 const agreement = ref(false);
-
+// 发送验证码
 function handleSmsCode() {
-  start();
+  getEmailCode(model.email);
 }
 
+// 点击注册按钮
 async function handleSubmit() {
   await formRef.value?.validate();
-  window.$message?.success('验证成功!');
+  const { data } = await fetchRegister(model.email, model.pwd, model.confirmPwd, model.code);
+  if (data) {
+    window.$message?.success(`注册成功!${data}`);
+  } else {
+    window.$message?.success('注册失败!');
+  }
 }
 </script>
 

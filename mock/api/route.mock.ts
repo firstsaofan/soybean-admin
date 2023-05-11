@@ -8,7 +8,7 @@ export default defineMock({
     const { userId = undefined } = req.body;
     const routeHomeName: AuthRoute.LastDegreeRouteKey = 'dashboard_analysis';
 
-    const role = userModel.find(item => item.userId === userId)?.userRole || 'user';
+    const role = userModel.find(item => item.userId === userId)?.roleId || 'user';
 
     const filterRoutes = routeModel[role];
 

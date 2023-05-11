@@ -68,14 +68,14 @@ export default defineMock([
       }
 
       const userInfo: Auth.UserInfo = {
-        userId: '',
+        userId: 0,
         userName: '',
-        userRole: 'user'
+        roleId: 'user'
       };
       const isInUser = userModel.some(item => {
         const flag = item.token === authorization;
         if (flag) {
-          const { userId: itemUserId, userName, userRole } = item;
+          const { userId: itemUserId, userName, roleId: userRole } = item;
           Object.assign(userInfo, { userId: itemUserId, userName, userRole });
         }
         return flag;

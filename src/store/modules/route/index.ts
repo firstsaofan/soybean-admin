@@ -135,7 +135,7 @@ export const useRouteStore = defineStore('route-store', {
       const { initHomeTab } = useTabStore();
       const auth = useAuthStore();
 
-      const routes = filterAuthRoutesByUserPermission(staticRoutes, auth.userInfo.userRole);
+      const routes = filterAuthRoutesByUserPermission(staticRoutes, auth.userInfo.roleId);
       this.handleAuthRoute(routes);
 
       initHomeTab(this.routeHomeName, router);

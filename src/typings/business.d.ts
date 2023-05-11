@@ -11,11 +11,11 @@ declare namespace Auth {
   /** 用户信息 */
   interface UserInfo {
     /** 用户id */
-    userId: string;
+    userId: number;
     /** 用户名 */
     userName: string;
     /** 用户角色类型 */
-    userRole: RoleType;
+    roleId: RoleType;
   }
 }
 
@@ -24,7 +24,7 @@ declare namespace UserManagement {
     /** 序号 */
     index: number;
     /** 表格的key（id） */
-    key: string;
+    key: number;
   }
 
   /**
