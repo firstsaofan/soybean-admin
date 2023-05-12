@@ -64,7 +64,8 @@ async function handleSubmit() {
   await formRef.value?.validate();
   const { data } = await fetchRegister(model.email, model.pwd, model.confirmPwd, model.code);
   if (data) {
-    window.$message?.success(`注册成功!${data}`);
+    window.$message?.success(data);
+    toLoginModule('pwd-login');
   } else {
     window.$message?.success('注册失败!');
   }

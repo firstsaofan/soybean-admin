@@ -397,7 +397,7 @@ const buttonExample: ButtonExample[] = [
           target: '_blank',
           type: 'primary'
         },
-        label: 'soybean-admin'
+        label: 'terramours-admin'
       }
     ],
     desc: '你可以把按钮渲染成不同的标签，比如 a标签 。'
