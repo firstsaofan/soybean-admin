@@ -37,7 +37,7 @@ declare namespace ApiUserManagement {
      */
     gender: '0' | '1' | null;
     /** 用户手机号码 */
-    userPhoneNum: string;
+    userPhoneNum: string | null;
     /** 用户邮箱 */
     userEmail: string | null;
     /**
@@ -53,6 +53,6 @@ declare namespace ApiUserManagement {
      * - true: 启用
      * - false: 禁用
      */
-    enableLogin: true | false | null;
+    enableLogin: boolean;
   }
 }

@@ -21,10 +21,7 @@ interface CustomFormRules {
 
 /** 表单规则 */
 export const formRules: CustomFormRules = {
-  phone: [
-    createRequiredFormRule('请输入手机号码'),
-    { pattern: REGEXP_PHONE, message: '手机号码格式错误', trigger: 'input' }
-  ],
+  phone: [{ pattern: REGEXP_PHONE, message: '手机号码格式错误', trigger: 'input' }],
   pwd: [
     createRequiredFormRule('请输入密码'),
     { pattern: REGEXP_PWD, message: '密码为6-18位数字/字符/符号，至少2种组合', trigger: 'input' }
@@ -33,7 +30,7 @@ export const formRules: CustomFormRules = {
     createRequiredFormRule('请输入验证码'),
     { pattern: REGEXP_CODE_SIX, message: '验证码格式错误', trigger: 'input' }
   ],
-  email: [{ pattern: REGEXP_EMAIL, message: '邮箱格式错误', trigger: 'blur' }]
+  email: [createRequiredFormRule('请输入邮箱'), { pattern: REGEXP_EMAIL, message: '邮箱格式错误', trigger: 'blur' }]
 };
 
 /** 是否为空字符串 */

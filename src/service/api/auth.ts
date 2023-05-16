@@ -40,7 +40,7 @@ export function fetchUserInfo() {
  * @description 后端根据用户id查询到对应的角色类型，并将路由筛选出对应角色的路由数据返回前端
  */
 export function fetchUserRoutes(userId: number) {
-  return mockRequest.post<ApiRoute.Route>('/getUserRoutes', { userId });
+  return request.post<ApiRoute.Route>('/api/v1/User/getUserRoutes', { userId });
 }
 
 /**
@@ -62,3 +62,41 @@ export function fetchUpdateToken(refreshToken: string) {
 export function fetchRegister(userAccount: string,userPassword: string,repeatPassword: string,checkCode: string) {
   return request.post<string>('/api/v1/Login/Register', { userAccount, userPassword,repeatPassword,checkCode});
 }
+
+/**
+ * 删除用户
+ * @param userId 
+ * @returns 
+ */
+export function fetchDelUser(userId: number){
+  return request.post<boolean>('api/v1/User/DelUser',{userId});
+}
+/**
+ * 更新用户信息
+ * @param userId 
+ * @param userName 
+ * @param userEmail 
+ * @param userPhoneNum 
+ * @param gender 
+ * @param enableLogin 
+ * @returns 
+ */
+export function fetchUpdateUser(userId:number  | null,userName:string | null,userEmail:string | null,userPhoneNum:string | null,gender:string | null,enableLogin:boolean | null){
+return request.post<boolean>('/api/v1/User/UpdateUser',{userId,userName,userEmail,userPhoneNum,gender,enableLogin});
+}
+
+/**
+ * 新增用户信息
+ * @param userId 
+ * @param userName 
+ * @param userEmail 
+ * @param userPhoneNum 
+ * @param gender 
+ * @param enableLogin 
+ * @returns 
+ */
+export function fetchAddUser(userName:string | null,userEmail:string | null,userPhoneNum:string | null,gender:string | null,enableLogin:boolean | null){
+  return request.post<boolean>('/api/v1/User/AddUser',{userName,userEmail,userPhoneNum,gender,enableLogin});
+  }
+
+

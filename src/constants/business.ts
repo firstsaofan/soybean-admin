@@ -43,3 +43,9 @@ export const userStatusOptions: Common.OptionWithKey<UserManagement.UserStatusKe
   { value: '3', label: userStatusLabels['3'] },
   { value: '4', label: userStatusLabels['4'] }
 ];
+
+/** 账号被锁状态 */
+export const enableLoginOptions: Common.OptionWithKey<UserManagement.EnableLoginKey>[] = [
+  { value: true, label: '正常' },
+  { value: false, label: '禁用' }
+];

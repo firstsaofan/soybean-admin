@@ -11,10 +11,10 @@
             <icon-ic-round-delete class="mr-4px text-20px" />
             删除
           </n-button>
-          <n-button type="success">
+          <!-- <n-button type="success">
             <icon-uil:export class="mr-4px text-20px" />
             导出Excel
-          </n-button>
+          </n-button> -->
         </n-space>
         <n-space align="center" :size="18">
           <n-button size="small" type="primary" @click="getTableData">
@@ -36,7 +36,7 @@ import type { Ref } from 'vue';
 import { NButton, NPopconfirm, NSpace, NTag } from 'naive-ui';
 import type { DataTableColumns, PaginationProps } from 'naive-ui';
 import { genderLabels } from '@/constants';
-import { fetchUserList } from '@/service';
+import { fetchUserList, fetchDelUser } from '@/service';
 import { useBoolean, useLoading } from '@/hooks';
 import TableActionModal from './components/table-action-modal.vue';
 import type { ModalType } from './components/table-action-modal.vue';
@@ -111,7 +111,7 @@ const columns: Ref<DataTableColumns<UserManagement.User>> = ref([
       if (row.enableLogin) {
         return <NTag type="success">正常</NTag>;
       }
-      return <span></span>;
+      return <NTag type="error">禁用</NTag>;
     }
   },
   {
@@ -162,8 +162,15 @@ function handleEditTable(rowId: number) {
   openModal();
 }
 
-function handleDeleteTable(rowId: number) {
-  window.$message?.info(`点击了删除，rowId为${rowId}`);
+async function handleDeleteTable(rowId: number) {
+  const { data } = await fetchDelUser(rowId);
+  if (data) {
+    window.$message?.success('删除成功!');
+    const idx = tableData.value.findIndex(item => item.userId === rowId);
+    if (idx > -1) {
+      tableData.value.splice(idx, 1);
+    }
+  }
 }
 
 const pagination: PaginationProps = reactive({

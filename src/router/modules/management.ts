@@ -1,6 +1,7 @@
 const management: AuthRoute.Route = {
   name: 'management',
   path: '/management',
+  redirect: '/management/user',
   component: 'basic',
   children: [
     {

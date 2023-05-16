@@ -42,4 +42,11 @@ declare namespace UserManagement {
    * - 4: 软删除
    */
   type UserStatusKey = NonNullable<User['userStatus']>;
+
+  /**
+   * 是否能登陆
+   * - true: 启用
+   * - false: 禁用
+   */
+  type EnableLoginKey = NonNullable<User['enableLogin']>;
 }

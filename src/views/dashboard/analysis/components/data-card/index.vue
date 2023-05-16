@@ -34,7 +34,7 @@ interface CardData {
 const cardData: CardData[] = [
   {
     id: 'visit',
-    title: '访问量',
+    title: '用户总数',
     value: 1000000,
     unit: '',
     colors: ['#ec4786', '#b955a4'],

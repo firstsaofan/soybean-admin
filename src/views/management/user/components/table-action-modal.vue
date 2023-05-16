@@ -5,22 +5,19 @@
         <n-form-item-grid-item :span="12" label="用户名" path="userName">
           <n-input v-model:value="formModel.userName" />
         </n-form-item-grid-item>
-        <!-- <n-form-item-grid-item :span="12" label="年龄" path="age">
-          <n-input-number v-model:value="formModel.age" clearable />
-        </n-form-item-grid-item> -->
         <n-form-item-grid-item :span="12" label="性别" path="gender">
           <n-radio-group v-model:value="formModel.gender">
             <n-radio v-for="item in genderOptions" :key="item.value" :value="item.value">{{ item.label }}</n-radio>
           </n-radio-group>
         </n-form-item-grid-item>
-        <n-form-item-grid-item :span="12" label="手机号" path="userPhoneNum">
-          <n-input v-model:value="formModel.userPhoneNum" />
-        </n-form-item-grid-item>
         <n-form-item-grid-item :span="12" label="邮箱" path="userEmail">
           <n-input v-model:value="formModel.userEmail" />
         </n-form-item-grid-item>
-        <n-form-item-grid-item :span="12" label="状态" path="userStatus">
-          <n-select v-model:value="formModel.userStatus" :options="userStatusOptions" />
+        <n-form-item-grid-item :span="12" label="手机号" path="userPhoneNum">
+          <n-input v-model:value="formModel.userPhoneNum" />
+        </n-form-item-grid-item>
+        <n-form-item-grid-item :span="12" label="是否启用" path="enableLogin">
+          <n-switch v-model:value="formModel.enableLogin" />
         </n-form-item-grid-item>
       </n-grid>
       <n-space class="w-full pt-16px" :size="24" justify="end">
@@ -33,9 +30,11 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, watch } from 'vue';
-import type { FormInst, FormItemRule } from 'naive-ui';
-import { genderOptions, userStatusOptions } from '@/constants';
+import type { FormInst, FormRules } from 'naive-ui';
+import { genderOptions } from '@/constants';
+import { fetchUpdateUser, fetchAddUser } from '@/service';
 import { formRules, createRequiredFormRule } from '@/utils';
+// import { Model } from 'echarts';
 
 export interface Props {
   /** 弹窗可见性 */
@@ -89,28 +88,26 @@ const formRef = ref<HTMLElement & FormInst>();
 
 type FormModel = Pick<
   UserManagement.User,
-  'userName' | 'gender' | 'userPhoneNum' | 'userEmail' | 'userStatus' | 'enableLogin'
+  'userId' | 'userName' | 'gender' | 'userPhoneNum' | 'userEmail' | 'enableLogin'
 >;
 
 const formModel = reactive<FormModel>(createDefaultFormModel());
 
-const rules: Record<keyof FormModel, FormItemRule | FormItemRule[]> = {
+const rules: FormRules = {
   userName: createRequiredFormRule('请输入用户名'),
   gender: createRequiredFormRule('请选择性别'),
   userPhoneNum: formRules.phone,
-  userEmail: formRules.email,
-  userStatus: createRequiredFormRule('请选择用户状态'),
-  enableLogin: createRequiredFormRule('请选择用户状态')
+  userEmail: formRules.email
 };
 
 function createDefaultFormModel(): FormModel {
   return {
+    userId: 0,
     userName: '',
     gender: null,
     userPhoneNum: '',
     userEmail: null,
-    userStatus: null,
-    enableLogin: null
+    enableLogin: true
   };
 }
 
@@ -136,8 +133,40 @@ function handleUpdateFormModelByModalType() {
 
 async function handleSubmit() {
   await formRef.value?.validate();
-  window.$message?.success('新增成功!');
-  closeModal();
+  const handlers: Record<ModalType, () => void> = {
+    add: async () => {
+      const { data } = await fetchAddUser(
+        formModel.userName,
+        formModel.userEmail,
+        formModel.userPhoneNum,
+        formModel.gender,
+        formModel.enableLogin
+      );
+      if (data) {
+        window.$message?.success('新增成功!');
+
+        closeModal();
+      }
+    },
+    edit: async () => {
+      if (props.editData) {
+        const { data } = await fetchUpdateUser(
+          formModel.userId,
+          formModel.userName,
+          formModel.userEmail,
+          formModel.userPhoneNum,
+          formModel.gender,
+          formModel.enableLogin
+        );
+        if (data) {
+          window.$message?.success('更新成功!');
+          closeModal();
+        }
+      }
+    }
+  };
+
+  handlers[props.type]();
 }
 
 watch(
