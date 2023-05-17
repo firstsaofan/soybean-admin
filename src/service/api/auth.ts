@@ -99,4 +99,62 @@ export function fetchAddUser(userName:string | null,userEmail:string | null,user
   return request.post<boolean>('/api/v1/User/AddUser',{userName,userEmail,userPhoneNum,gender,enableLogin});
   }
 
+  /**
+ * 删除角色
+ * @param roleId 
+ * @returns 
+ */
+export function fetchDelRole(roleId: number){
+  return request.post<boolean>('api/v1/Role/DelRole',{roleId});
+}
+/**
+ * 更新角色信息
+ * @param roleId 
+ * @param roleName 
+ * @returns 
+ */
+export function fetchUpdateRole(roleId:number  | null,roleName:string | null){
+return request.post<boolean>('/api/v1/Role/UpdateRole',{roleId,roleName});
+}
+
+/**
+ * 新增角色信息
+ * @param roleName 
+ * @returns 
+ */
+export function fetchAddRole(roleName:string | null){
+  return request.post<boolean>('/api/v1/Role/AddRole',{roleName});
+}
+
+
+  /**
+ * 删除菜单
+ * @param roleId 
+ * @returns 
+ */
+  export function fetchDelMenu(roleId: number){
+    return request.post<boolean>('api/v1/Menu/DelMenu',{roleId});
+  }
+  /**
+   * 更新菜单信息
+   * @param roleId 
+   * @param roleName 
+   * @returns 
+   */
+  export function fetchUpdateMenu(menuId:number | null,parentId:number | null,menuName:string |null,menuUrl: string|null,icon: string|null,description: string|null,isHome:boolean,externalUrl:boolean,isShow:boolean,remark:string|null,orderNo:number|null){
+  return request.post<boolean>('/api/v1/Menu/UpdateMenu',{menuId,parentId,menuName,menuUrl,icon,description,isHome,externalUrl,isShow,remark,orderNo});
+  }
+  
+  /**
+   * 新增菜单信息
+   * @param roleName 
+   * @returns 
+   */
+  export function fetchAddMenu(parentId:number | null,menuName:string |null,menuUrl: string|null,icon: string|null,description: string|null,isHome:boolean,externalUrl:boolean,isShow:boolean,remark:string|null,orderNo:number|null){
+    return request.post<boolean>('/api/v1/Menu/AddMenu',{parentId,menuName,menuUrl,icon,description,isHome,externalUrl,isShow,remark,orderNo});
+  }
+
+
+
+
 

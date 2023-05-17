@@ -27,6 +27,19 @@ declare namespace UserManagement {
     key: number;
   }
 
+  interface Role extends ApiUserManagement.Role {
+    /** 序号 */
+    index: number;
+    /** 表格的key（id） */
+    key: number;
+  }
+
+  interface Menu extends ApiUserManagement.Menu {
+    /** 序号 */
+    index: number;
+    /** 表格的key（id） */
+    key: number;
+  }
   /**
    * 用户性别
    * - 0: 女
