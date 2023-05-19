@@ -25,6 +25,7 @@
       </n-space>
       <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination" />
       <table-action-modal v-model:visible="visible" :type="modalType" :edit-data="editData" />
+      <menu-setting v-model:edit-visible="menuVisible" :role-id="checkRoleId" />
     </n-card>
   </div>
 </template>
@@ -38,9 +39,10 @@ import { fetchRoleList, fetchDelRole } from '@/service';
 import { useBoolean, useLoading } from '@/hooks';
 import TableActionModal from './components/table-action-modal.vue';
 import type { ModalType } from './components/table-action-modal.vue';
-
+import MenuSetting from './components/menu-setting.vue';
 const { loading, startLoading, endLoading } = useLoading(false);
 const { bool: visible, setTrue: openModal } = useBoolean();
+const { bool: menuVisible, setTrue: openMenu } = useBoolean();
 
 const tableData = ref<UserManagement.Role[]>([]);
 function setTableData(data: UserManagement.Role[]) {
@@ -90,6 +92,9 @@ const columns: Ref<DataTableColumns<UserManagement.Role>> = ref([
     render: row => {
       return (
         <NSpace justify={'center'}>
+          <NButton size={'small'} onClick={() => handleMenu(row.roleId)}>
+            设置权限
+          </NButton>
           <NButton size={'small'} onClick={() => handleEditTable(row.roleId)}>
             编辑
           </NButton>
@@ -112,6 +117,10 @@ function setModalType(type: ModalType) {
 }
 
 const editData = ref<UserManagement.Role | null>(null);
+const checkRoleId = ref<number | null>(null);
+function setCheckRoleId(data: number | null) {
+  checkRoleId.value = data;
+}
 
 function setEditData(data: UserManagement.Role | null) {
   editData.value = data;
@@ -120,6 +129,11 @@ function setEditData(data: UserManagement.Role | null) {
 function handleAddTable() {
   openModal();
   setModalType('add');
+}
+
+function handleMenu(rowId: number) {
+  openMenu();
+  setCheckRoleId(rowId);
 }
 
 function handleEditTable(rowId: number) {

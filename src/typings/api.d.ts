@@ -88,5 +88,9 @@ declare namespace ApiUserManagement {
     remark: string | null;
     /** 排序 */
     orderNo: number;
+    /** 子节点 */
+    children: Menu[] | null;
+    /** 是否勾选 */
+    isChecked: boolean | null;
   }
 }

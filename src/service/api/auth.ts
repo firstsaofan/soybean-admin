@@ -153,6 +153,23 @@ export function fetchAddRole(roleName:string | null){
   export function fetchAddMenu(parentId:number | null,menuName:string |null,menuUrl: string|null,icon: string|null,description: string|null,isHome:boolean,externalUrl:boolean,isShow:boolean,remark:string|null,orderNo:number|null){
     return request.post<boolean>('/api/v1/Menu/AddMenu',{parentId,menuName,menuUrl,icon,description,isHome,externalUrl,isShow,remark,orderNo});
   }
+  /**
+ * 角色匹配菜单
+ * @param menuIds 
+ * @returns 
+ */
+   export function fetchAddMenuToRole(roleId: number | null,menuIds: number[]){
+    return request.post<boolean>('api/v1/Menu/AddMenuToRole',{roleId,menuIds});
+  }
+
+   /**
+ * 角色下的菜单id
+ * @param roleId 
+ * @returns 
+ */
+   export function fetchGetRoleMenusIds(roleId: number | null){
+    return request.post<number[]>('api/v1/Menu/GetRoleMenusIds',{roleId});
+  }
 
 
 

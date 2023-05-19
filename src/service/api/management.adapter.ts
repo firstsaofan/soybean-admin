@@ -1,3 +1,5 @@
+import type { TreeOption } from 'naive-ui';
+
 export function adapterOfFetchUserList(data: ApiUserManagement.User[] | null): UserManagement.User[] {
   if (!data) return [];
 
@@ -43,6 +45,25 @@ export function adapterOfFetchMenuList(data: ApiUserManagement.Menu[] | null): U
       index: index + 1,
       key: item.menuId,
       ...item
+    };
+
+    return role;
+  });
+}
+
+/**
+ * 菜单树
+ * @param data
+ * @returns
+ */
+export function adapterOfFetchMenuTree(data: ApiUserManagement.Menu[] | null): TreeOption[] {
+  if (!data) return [];
+
+  return data.map(item => {
+    const role: TreeOption = {
+      key: item.menuId,
+      label: item.menuName ?? '',
+      children: adapterOfFetchMenuTree(item.children ?? [])
     };
 
     return role;
