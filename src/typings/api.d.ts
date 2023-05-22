@@ -21,6 +21,12 @@ declare namespace ApiRoute {
     home: AuthRoute.AllRouteKey;
   }
 }
+declare namespace ApiCommon {
+  interface KeyValue {
+    key: number | string;
+    value: string;
+  }
+}
 
 declare namespace ApiUserManagement {
   interface User {
@@ -54,6 +60,8 @@ declare namespace ApiUserManagement {
      * - false: 禁用
      */
     enableLogin: boolean;
+    /** 角色id */
+    roleId: number;
   }
   interface Role {
     /** 角色id */

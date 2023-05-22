@@ -9,7 +9,7 @@
           <n-input v-model:value="formModel.icon" />
         </n-form-item-grid-item>
         <n-form-item-grid-item :span="12" label="父级菜单" path="parentId">
-          <n-input-number v-model:value="formModel.parentId" />
+          <n-select v-model:value="formModel.parentId" :options="options" />
         </n-form-item-grid-item>
         <n-form-item-grid-item :span="12" label="排序" path="orderNo">
           <n-input-number v-model:value="formModel.orderNo" />
@@ -47,8 +47,8 @@
 <script setup lang="ts">
 import { ref, computed, reactive, watch } from 'vue';
 import type { FormInst } from 'naive-ui';
-import { fetchUpdateMenu, fetchAddMenu } from '@/service';
-
+import { fetchUpdateMenu, fetchAddMenu, fetchGetMenuSelect } from '@/service';
+let options: { value: string | number; label: string }[] = [];
 export interface Props {
   /** 弹窗可见性 */
   visible: boolean;
@@ -79,6 +79,9 @@ const emit = defineEmits<Emits>();
 
 const modalVisible = computed({
   get() {
+    if (props.visible === true) {
+      getMenuData();
+    }
     return props.visible;
   },
   set(visible) {
@@ -208,6 +211,19 @@ watch(
     }
   }
 );
+async function getMenuData() {
+  const { data } = await fetchGetMenuSelect(null, props.editData?.menuId ?? null);
+  if (data) {
+    setTimeout(() => {
+      options = data.map(item => {
+        return {
+          value: item.key,
+          label: item.value
+        };
+      });
+    }, 1000);
+  }
+}
 </script>
 
 <style scoped></style>

@@ -80,10 +80,7 @@ async function getMenuIds() {
   startLoading();
   const { data } = await fetchGetRoleMenusIds(props.roleId);
   if (data) {
-    setTimeout(() => {
-      checkIds.value = data;
-      endLoading();
-    }, 1000);
+    checkIds.value = data;
   }
 }
 

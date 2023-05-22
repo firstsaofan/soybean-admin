@@ -100,6 +100,10 @@ pnpm build
 
 ## Docker 部署
 
+```bash
+docker build -t terramoursweb -f docker/Dockerfile .
+```
+
 - Docker 部署 Soybean
 
 ```bash

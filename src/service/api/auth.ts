@@ -40,7 +40,7 @@ export function fetchUserInfo() {
  * @description 后端根据用户id查询到对应的角色类型，并将路由筛选出对应角色的路由数据返回前端
  */
 export function fetchUserRoutes(userId: number) {
-  return request.post<ApiRoute.Route>('/api/v1/User/getUserRoutes', { userId });
+  return request.post<ApiRoute.Route>('/api/v1/Menu/GetUserRoutes', { userId });
 }
 
 /**
@@ -81,8 +81,8 @@ export function fetchDelUser(userId: number){
  * @param enableLogin 
  * @returns 
  */
-export function fetchUpdateUser(userId:number  | null,userName:string | null,userEmail:string | null,userPhoneNum:string | null,gender:string | null,enableLogin:boolean | null){
-return request.post<boolean>('/api/v1/User/UpdateUser',{userId,userName,userEmail,userPhoneNum,gender,enableLogin});
+export function fetchUpdateUser(userId:number  | null,userName:string | null,userEmail:string | null,userPhoneNum:string | null,gender:string | null,enableLogin:boolean | null,roleId:number |null){
+return request.post<boolean>('/api/v1/User/UpdateUser',{userId,userName,userEmail,userPhoneNum,gender,enableLogin,roleId});
 }
 
 /**
@@ -95,8 +95,8 @@ return request.post<boolean>('/api/v1/User/UpdateUser',{userId,userName,userEmai
  * @param enableLogin 
  * @returns 
  */
-export function fetchAddUser(userName:string | null,userEmail:string | null,userPhoneNum:string | null,gender:string | null,enableLogin:boolean | null){
-  return request.post<boolean>('/api/v1/User/AddUser',{userName,userEmail,userPhoneNum,gender,enableLogin});
+export function fetchAddUser(userName:string | null,userEmail:string | null,userPhoneNum:string | null,gender:string | null,enableLogin:boolean | null,roleId:number |null){
+  return request.post<boolean>('/api/v1/User/AddUser',{userName,userEmail,userPhoneNum,gender,enableLogin,roleId});
   }
 
   /**
@@ -170,6 +170,25 @@ export function fetchAddRole(roleName:string | null){
    export function fetchGetRoleMenusIds(roleId: number | null){
     return request.post<number[]>('api/v1/Menu/GetRoleMenusIds',{roleId});
   }
+ /**
+  * 菜单下拉框
+  * @param roleId 角色
+  * @param menuId 当前菜单id（排除自己）
+  * @returns 
+  */
+  export function fetchGetMenuSelect(roleId: number | null,menuId: number | null){
+    return request.post<ApiCommon.KeyValue[]>('api/v1/Menu/GetMenuSelect',{roleId,menuId});
+  }
+
+ /**
+  * 用户下拉框
+  * @param roleId 角色
+  * @param menuId 当前菜单id（排除自己）
+  * @returns 
+  */
+ export function fetchGetRoleSelect(){
+  return request.post<ApiCommon.KeyValue[]>('api/v1/Menu/GetRoleSelect');
+}
 
 
 

@@ -16,6 +16,9 @@
         <n-form-item-grid-item :span="12" label="手机号" path="userPhoneNum">
           <n-input v-model:value="formModel.userPhoneNum" />
         </n-form-item-grid-item>
+        <n-form-item-grid-item :span="12" label="设置角色" path="userPhoneNum">
+          <n-select v-model:value="formModel.roleId" :options="options" />
+        </n-form-item-grid-item>
         <n-form-item-grid-item :span="12" label="是否启用" path="enableLogin">
           <n-switch v-model:value="formModel.enableLogin" />
         </n-form-item-grid-item>
@@ -32,10 +35,10 @@
 import { ref, computed, reactive, watch } from 'vue';
 import type { FormInst, FormRules } from 'naive-ui';
 import { genderOptions } from '@/constants';
-import { fetchUpdateUser, fetchAddUser } from '@/service';
+import { fetchUpdateUser, fetchAddUser, fetchGetRoleSelect } from '@/service';
 import { formRules, createRequiredFormRule } from '@/utils';
 // import { Model } from 'echarts';
-
+let options: { value: string | number; label: string }[] = [];
 export interface Props {
   /** 弹窗可见性 */
   visible: boolean;
@@ -66,6 +69,9 @@ const emit = defineEmits<Emits>();
 
 const modalVisible = computed({
   get() {
+    if (props.visible === true) {
+      getRoleData();
+    }
     return props.visible;
   },
   set(visible) {
@@ -88,7 +94,7 @@ const formRef = ref<HTMLElement & FormInst>();
 
 type FormModel = Pick<
   UserManagement.User,
-  'userId' | 'userName' | 'gender' | 'userPhoneNum' | 'userEmail' | 'enableLogin'
+  'userId' | 'userName' | 'gender' | 'userPhoneNum' | 'userEmail' | 'enableLogin' | 'roleId'
 >;
 
 const formModel = reactive<FormModel>(createDefaultFormModel());
@@ -107,7 +113,8 @@ function createDefaultFormModel(): FormModel {
     gender: null,
     userPhoneNum: '',
     userEmail: null,
-    enableLogin: true
+    enableLogin: true,
+    roleId: 10
   };
 }
 
@@ -140,7 +147,8 @@ async function handleSubmit() {
         formModel.userEmail,
         formModel.userPhoneNum,
         formModel.gender,
-        formModel.enableLogin
+        formModel.enableLogin,
+        formModel.roleId
       );
       if (data) {
         window.$message?.success('新增成功!');
@@ -156,7 +164,8 @@ async function handleSubmit() {
           formModel.userEmail,
           formModel.userPhoneNum,
           formModel.gender,
-          formModel.enableLogin
+          formModel.enableLogin,
+          formModel.roleId
         );
         if (data) {
           window.$message?.success('更新成功!');
@@ -177,6 +186,20 @@ watch(
     }
   }
 );
+async function getRoleData() {
+  const { data } = await fetchGetRoleSelect();
+  if (data) {
+    setTimeout(() => {
+      options = data.map(item => {
+        return {
+          value: item.key,
+          label: item.value
+        };
+      });
+    }, 1000);
+  }
+}
+getRoleData();
 </script>
 
 <style scoped></style>
