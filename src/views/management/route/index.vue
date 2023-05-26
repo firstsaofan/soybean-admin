@@ -32,7 +32,7 @@
 <script setup lang="tsx">
 import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
-import { NButton, NPopconfirm, NSpace } from 'naive-ui';
+import { NButton, NPopconfirm, NSpace, NTag } from 'naive-ui';
 import type { DataTableColumns, PaginationProps } from 'naive-ui';
 import { fetchMenuList, fetchDelMenu } from '@/service';
 import { useBoolean, useLoading } from '@/hooks';
@@ -81,17 +81,35 @@ const columns: Ref<DataTableColumns<UserManagement.Menu>> = ref([
   {
     key: 'externalUrl',
     title: '是否外链',
-    align: 'center'
+    align: 'center',
+    render: row => {
+      if (row.externalUrl) {
+        return <NTag type="success">是</NTag>;
+      }
+      return <NTag type="error">否</NTag>;
+    }
   },
   {
     key: 'isShow',
     title: '是否可见',
-    align: 'center'
+    align: 'center',
+    render: row => {
+      if (row.isShow) {
+        return <NTag type="success">是</NTag>;
+      }
+      return <NTag type="error">否</NTag>;
+    }
   },
   {
     key: 'isHome',
     title: '是否首页',
-    align: 'center'
+    align: 'center',
+    render: row => {
+      if (row.isHome) {
+        return <NTag type="success">是</NTag>;
+      }
+      return <NTag type="error">否</NTag>;
+    }
   },
   {
     key: 'actions',
